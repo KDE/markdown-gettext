@@ -1,14 +1,14 @@
 # SPDX-FileCopyrightText: 2023 Phu Hung Nguyen <phuhnguyen@outlook.com>
 # SPDX-License-Identifier: CC0-1.0
 
-[tool.poetry]
+[project]
 name = "markdown-gettext"
 version = "0.2.1"
 description = "Markdown i18n with gettext"
 authors = ["Phu Hung Nguyen <phuhnguyen@outlook.com>"]
 license = "LGPL-2.1-or-later"
 readme = "README.md"
-repository = "https://github.com/phunh/markdown-gettext"
+repository = "https://invent.kde.org/sdk/markdown-gettext"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -17,20 +17,13 @@ classifiers = [
     "Programming Language :: Python :: 3"
 ]
 packages = [{include = "markdown_gettext"}]
-
-[tool.poetry.dependencies]
-python = "^3.8"
-polib = "^1.2.0"
-PyYAML = [
-    {version = "^5.3", python = ">=3.8,<3.10"},
-    {version = "^6.0.1", python = ">=3.10"}
+requires-python = ">=3.11"
+dependencies = [
+    "mdit-py-i18n @ https://invent.kde.org/sdk/mdit-py-i18n.git",
+    "polib>=1.2.0",
+    "pyyaml>=6.0.3",
 ]
-mdit-py-i18n = "^0.2.1"
 
-[tool.poetry.scripts]
+[project.scripts]
 md-gettext = 'markdown_gettext.cli:main'
 markdown-gettext = 'markdown_gettext.cli:main'
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
