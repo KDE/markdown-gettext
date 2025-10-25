@@ -1,0 +1,7 @@
+# SPDX-FileCopyrightText: 2025 Carl Schwan <carlschwan@kde.org>
+# SPDX-License-Identifier: CC0-1.0
+#
+include:
+  - project: sysadmin/ci-utilities
+    file:
+      - /gitlab-templates/reuse-lint.yml
