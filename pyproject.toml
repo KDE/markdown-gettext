@@ -5,7 +5,9 @@
 name = "markdown-gettext"
 version = "0.2.1"
 description = "Markdown i18n with gettext"
-authors = ["Phu Hung Nguyen <phuhnguyen@outlook.com>"]
+authors = [
+    { name = "Phu Hung Nguyen", email = "phuhnguyen@outlook.com" }
+]
 license = "LGPL-2.1-or-later"
 readme = "README.md"
 repository = "https://invent.kde.org/sdk/markdown-gettext"
