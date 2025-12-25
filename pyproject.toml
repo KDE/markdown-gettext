@@ -19,7 +19,7 @@ classifiers = [
 ]
 requires-python = ">=3.11"
 dependencies = [
-    "mdit-py-i18n @ https://invent.kde.org/sdk/mdit-py-i18n.git",
+    "mdit-py-i18n @ git+https://invent.kde.org/sdk/mdit-py-i18n.git",
     "polib>=1.2.0",
     "pyyaml>=6.0.3",
 ]
