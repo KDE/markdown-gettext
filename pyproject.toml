@@ -10,7 +10,6 @@ authors = [
 ]
 license = "LGPL-2.1-or-later"
 readme = "README.md"
-repository = "https://invent.kde.org/sdk/markdown-gettext"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -18,13 +17,15 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3"
 ]
-packages = [{include = "markdown_gettext"}]
 requires-python = ">=3.11"
 dependencies = [
     "mdit-py-i18n @ https://invent.kde.org/sdk/mdit-py-i18n.git",
     "polib>=1.2.0",
     "pyyaml>=6.0.3",
 ]
+
+[project.urls]
+Repository = "https://invent.kde.org/sdk/markdown-gettext.git"
 
 [project.scripts]
 md-gettext = 'markdown_gettext.cli:main'
