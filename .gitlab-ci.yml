@@ -35,3 +35,14 @@ python-lint:
   stage: validate
   extends: .tox_base
   script: tox -e lint
+
+build-setuptools:
+  stage: build
+  image: python:$PYTHON_VERSION
+  before_script:
+    - python3 --version
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+    - pip install --upgrade build
+  script:
+    - python -m build
