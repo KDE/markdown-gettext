@@ -8,7 +8,12 @@ description = "Markdown i18n with gettext"
 authors = [
     { name = "Phu Hung Nguyen", email = "phuhnguyen@outlook.com" }
 ]
-license = "LGPL-2.1-or-later"
+# This is a legacy way to specifiy the license
+license = {text = "LGPL-2.1-or-later"}
+# The below is be the modern replacement but not supported by setuptools with Python 3.8
+# See https://setuptools.pypa.io/en/stable/userguide/license_migration.html
+#license = "LGPL-2.1-or-later"
+
 readme = "README.md"
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -17,7 +22,10 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3"
 ]
-requires-python = ">=3.11"
+
+# The KDE Scripty host runs an ancient Python 3.8. Check if this has changed,
+# before raising the minimum required Python version here!
+requires-python = ">=3.8"
 dependencies = [
     "mdit-py-i18n @ git+https://invent.kde.org/sdk/mdit-py-i18n.git",
     "polib>=1.2.0",

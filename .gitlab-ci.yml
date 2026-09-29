@@ -46,3 +46,17 @@ build-setuptools:
     - pip install --upgrade build
   script:
     - python -m build
+
+# The Scripty host runs an ancient Python 3.8. Ensure compatibility.
+build-setuptools-legacy:
+  stage: build
+  variables:
+    PYTHON_VERSION: "3.8"
+  image: python:$PYTHON_VERSION
+  before_script:
+    - python3 --version
+    - python3 -m venv .venv
+    - source .venv/bin/activate
+    - pip install --upgrade build
+  script:
+    - python -m build
