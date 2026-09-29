@@ -3,8 +3,8 @@
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List, Tuple
 from pathlib import Path
+from typing import List, Tuple
 
 import polib
 import yaml
@@ -15,26 +15,31 @@ from mdit_py_i18n import utils
 class I18NEntry:
     msgid: str
     occurrences: List[Tuple[str, int]] = field(default_factory=list)
-    comment: str = ''
-    msgctxt: str = ''
+    comment: str = ""
+    msgctxt: str = ""
 
     def to_poentry(self) -> polib.POEntry:
-        return polib.POEntry(msgid=self.msgid,
-                             msgstr='',
-                             # 0 passed to polib will be lost, use `str` to keep 0
-                             occurrences=[(o[0], str(o[1])) for o in self.occurrences],
-                             comment=self.comment,
-                             msgctxt=self.msgctxt if self.msgctxt != '' else None)
+        return polib.POEntry(
+            msgid=self.msgid,
+            msgstr="",
+            # 0 passed to polib will be lost, use `str` to keep 0
+            occurrences=[(o[0], str(o[1])) for o in self.occurrences],
+            comment=self.comment,
+            msgctxt=self.msgctxt if self.msgctxt != "" else None,
+        )
 
 
 class DomainExtraction:
     """
     Implements `DomainExtractionProtocol`
     """
+
     def __init__(self):
         self.entries: List[I18NEntry] = []
 
-    def add_entry(self, path: str, msgid: str, line_num: int, comment: str = '', msgctxt: str = ''):
+    def add_entry(
+        self, path: str, msgid: str, line_num: int, comment: str = "", msgctxt: str = ""
+    ):
         if not msgid:
             return
         for e in self.entries:
@@ -70,28 +75,28 @@ class DomainExtraction:
         existing_pot.map_by_id = {e.msgid: e for e in existing_pot}
         return existing_pot
 
-    def make_pot(self, package: str, report_address: str, team_address: str, dest_path: str):
+    def make_pot(
+        self, package: str, report_address: str, team_address: str, dest_path: str
+    ):
         pot = polib.POFile()
         pot.metadata = {
-            'Project-Id-Version': f'{package} 1.0',
-            'Report-Msgid-Bugs-To': report_address,
-            'POT-Creation-Date': datetime.now().astimezone().strftime('%Y-%m-%d %H:%M%z'),
-            'PO-Revision-Date': 'YEAR-MO-DA HO:MI+ZONE',
-            'Last-Translator': 'FULL NAME <EMAIL@ADDRESS>',
-            'Language-Team': f'LANGUAGE <{team_address}>',
-            'MIME-Version': '1.0',
-            'Content-Type': 'text/plain; charset=utf-8',
-            'Content-Transfer-Encoding': '8bit',
+            "Project-Id-Version": f"{package} 1.0",
+            "Report-Msgid-Bugs-To": report_address,
+            "POT-Creation-Date": datetime.now()
+            .astimezone()
+            .strftime("%Y-%m-%d %H:%M%z"),
+            "PO-Revision-Date": "YEAR-MO-DA HO:MI+ZONE",
+            "Last-Translator": "FULL NAME <EMAIL@ADDRESS>",
+            "Language-Team": f"LANGUAGE <{team_address}>",
+            "MIME-Version": "1.0",
+            "Content-Type": "text/plain; charset=utf-8",
+            "Content-Transfer-Encoding": "8bit",
         }
 
         existing_pot = self.open_existing_pot(dest_path)
         for e in self.entries:
             # preserve existing comments
-            if (
-                not e.comment
-                and existing_pot
-                and e.msgid in existing_pot.map_by_id
-            ):
+            if not e.comment and existing_pot and e.msgid in existing_pot.map_by_id:
                 e.comment = existing_pot.map_by_id[e.msgid].comment
 
             pot.append(e.to_poentry())

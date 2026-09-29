@@ -9,7 +9,7 @@ from mdit_py_i18n.utils import L10NFunc, L10NResult
 
 
 def gettext_func(domain_name):
-    gettext.bindtextdomain(domain_name, 'locale')
+    gettext.bindtextdomain(domain_name, "locale")
     gettext.textdomain(domain_name)
     return gettext.gettext
 
@@ -18,6 +18,7 @@ class DomainGeneration:
     """
     Implements `DomainGenerationProtocol`
     """
+
     def __init__(self, l10n_func: L10NFunc):
         self.l10n_func = l10n_func
 
@@ -44,6 +45,8 @@ class DomainGeneration:
     def render_front_matter(self, content: str, markup: str) -> L10NResult:
         fm = yaml.safe_load(content)
         fm_result = self.localize_front_matter(fm)
-        rendered_localized_fm = yaml.dump(fm, default_flow_style=False, allow_unicode=True)
-        fm_result.localized = f'{markup}\n{rendered_localized_fm}\n{markup}\n'
+        rendered_localized_fm = yaml.dump(
+            fm, default_flow_style=False, allow_unicode=True
+        )
+        fm_result.localized = f"{markup}\n{rendered_localized_fm}\n{markup}\n"
         return fm_result
