@@ -9,6 +9,17 @@ include:
 variables:
   PYTHON_VERSION: "3.12"
 
+.uv_base:
+  variables:
+    UV_VERSION: "0.12.21"
+    BASE_LAYER: trixie-slim
+    # GitLab CI creates a separate mountpoint for the build directory,
+    # so we need to copy instead of using hard links.
+    UV_LINK_MODE: copy
+  image: ghcr.io/astral-sh/uv:$UV_VERSION-python$PYTHON_VERSION-$BASE_LAYER
+  before_script:
+    - python3 --version
+
 .tox_base:
   image: python:$PYTHON_VERSION
   tags:
@@ -36,6 +47,12 @@ python-lint:
   extends: .tox_base
   script: tox -e lint
 
+build-uv:
+  stage: build
+  extends: .uv_base
+  script:
+    - uv build
+
 build-setuptools:
   stage: build
   image: python:$PYTHON_VERSION
@@ -60,3 +77,18 @@ build-setuptools-legacy:
     - pip install --upgrade build
   script:
     - python -m build
+
+dev-to-gitlab:
+  extends: .uv_base
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  stage: deploy
+  environment: development
+  variables:
+    UV_PUBLISH_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi"
+    UV_PUBLISH_USERNAME: "gitlab-ci-token"
+    UV_PUBLISH_PASSWORD: "${CI_JOB_TOKEN}"
+  script:
+    - uv version "$(uv version --short)".dev$CI_PIPELINE_IID
+    - uv build
+    - uv publish
